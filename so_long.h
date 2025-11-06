@@ -25,12 +25,14 @@ typedef struct s_game
 	t_map	*map;
 	void	*img_wall;
 	void	*img_floor;
-	void	*img_player;
+	void	*img_player_right;
+	void	*img_player_left;
 	void	*img_exit;
 	void	*img_collectible;
 	int		player_x;
 	int		player_y;
 	int		moves;
+	int		facing_right;
 }	t_game;
 
 t_map   *get_map(char *path);

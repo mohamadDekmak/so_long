@@ -40,6 +40,12 @@ void	move_player(t_game *game, int dx, int dy)
 	int	new_y;
 	char	tile;
 
+	// Update facing direction
+	if (dx > 0)
+		game->facing_right = 1;
+	else if (dx < 0)
+		game->facing_right = 0;
+
 	new_x = game->player_x + dx;
 	new_y = game->player_y + dy;
 	if (new_x < 0 || new_x >= game->map->width || 
@@ -48,6 +54,10 @@ void	move_player(t_game *game, int dx, int dy)
 
 	tile = game->map->arr[new_y][new_x];
 	if (tile == '1')
+		return ;
+	
+	// Don't allow moving to exit until all collectibles are gathered
+	if (tile == 'E' && game->map->collectibles > 0)
 		return ;
 
 	game->map->arr[game->player_y][game->player_x] = '0';
