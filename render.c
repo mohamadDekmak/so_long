@@ -3,40 +3,50 @@
 
 void	load_images(t_game *game)
 {
-	int w;
-	int h;
+	int	w;
+	int	h;
 
-	game->img_wall = mlx_xpm_file_to_image(game->mlx, "assets/fence.xpm", &w, &h);
-	game->img_floor = mlx_xpm_file_to_image(game->mlx, "assets/floor.xpm", &w, &h);
-	game->img_player_right = mlx_xpm_file_to_image(game->mlx, "assets/spike_right.xpm", &w, &h);
-	game->img_player_left = mlx_xpm_file_to_image(game->mlx, "assets/spike.xpm", &w, &h);
-	game->img_exit = mlx_xpm_file_to_image(game->mlx, "assets/dog_house.xpm", &w, &h);
-	game->img_collectible = mlx_xpm_file_to_image(game->mlx, "assets/bone.xpm", &w, &h);
+	w = 0;
+	h = 0;
+	game->img_wall = mlx_xpm_file_to_image(game->mlx,
+			"assets/fence.xpm", &w, &h);
+	game->img_floor = mlx_xpm_file_to_image(game->mlx,
+			"assets/floor.xpm", &w, &h);
+	game->img_player_right = mlx_xpm_file_to_image(game->mlx,
+			"assets/spike_right.xpm", &w, &h);
+	game->img_player_left = mlx_xpm_file_to_image(game->mlx,
+			"assets/spike.xpm", &w, &h);
+	game->img_exit = mlx_xpm_file_to_image(game->mlx,
+			"assets/dog_house.xpm", &w, &h);
+	game->img_collectible = mlx_xpm_file_to_image(game->mlx,
+			"assets/bone.xpm", &w, &h);
 	game->facing_right = 1;
 }
 
 void	draw_tile(t_game *g, int x, int y, char tile)
 {
 	void	*player_sprite;
-	
-	// Always draw floor first
-	mlx_put_image_to_window(g->mlx, g->win, g->img_floor, x * TILE_SIZE, y * TILE_SIZE);
-	
-	// Then draw objects on top
+
+	mlx_put_image_to_window(g->mlx, g->win, g->img_floor,
+			x * TILE_SIZE, y * TILE_SIZE);
 	if (tile == '1')
-		mlx_put_image_to_window(g->mlx, g->win, g->img_wall, x * TILE_SIZE, y * TILE_SIZE);
+		mlx_put_image_to_window(g->mlx, g->win, g->img_wall,
+				x * TILE_SIZE, y * TILE_SIZE);
 	else if (tile == 'P')
 	{
-		player_sprite = g->facing_right ? g->img_player_right : g->img_player_left;
-		mlx_put_image_to_window(g->mlx, g->win, player_sprite, x * TILE_SIZE, y * TILE_SIZE);
+		if (g->facing_right)
+			player_sprite = g->img_player_right;
+		else
+			player_sprite = g->img_player_left;
+		mlx_put_image_to_window(g->mlx, g->win, player_sprite,
+				x * TILE_SIZE, y * TILE_SIZE);
 	}
 	else if (tile == 'E')
-	{
-		if (g->map->collectibles == 0)
-			mlx_put_image_to_window(g->mlx, g->win, g->img_exit, x * TILE_SIZE, y * TILE_SIZE);
-	}
+		mlx_put_image_to_window(g->mlx, g->win, g->img_exit,
+				x * TILE_SIZE, y * TILE_SIZE);
 	else if (tile == 'C')
-		mlx_put_image_to_window(g->mlx, g->win, g->img_collectible, x * TILE_SIZE, y * TILE_SIZE);
+		mlx_put_image_to_window(g->mlx, g->win, g->img_collectible,
+				x * TILE_SIZE, y * TILE_SIZE);
 }
 
 void	render_map(t_game *game)
@@ -55,4 +65,23 @@ void	render_map(t_game *game)
 		}
 		y++;
 	}
+	display_moves(game);
+}
+
+void	display_moves(t_game *game)
+{
+	char	*moves_str;
+	char	*moves_num;
+	char	*display;
+
+	moves_num = ft_itoa(game->moves);
+	if (!moves_num)
+		return ;
+	moves_str = ft_strjoin("Moves: ", moves_num);
+	free(moves_num);
+	if (!moves_str)
+		return ;
+	display = moves_str;
+	mlx_string_put(game->mlx, game->win, 10, 20, 0xFFFFFF, display);
+	free(display);
 }
