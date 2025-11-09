@@ -8,6 +8,12 @@
 # include <stdio.h>
 # include "libft/libft.h"
 
+typedef struct s_point
+{
+	int x;
+	int y;
+}	t_point;
+
 typedef struct s_map
 {
 	char	**arr;
@@ -16,6 +22,7 @@ typedef struct s_map
 	int		collectibles;
 	int		players;
 	int		exits;
+	t_point	player;
 }			t_map;
 
 typedef struct s_game
@@ -29,8 +36,6 @@ typedef struct s_game
 	void	*img_player_left;
 	void	*img_exit;
 	void	*img_collectible;
-	int		player_x;
-	int		player_y;
 	int		moves;
 	int		facing_right;
 	int		collectibles_count;
@@ -46,5 +51,12 @@ int		handle_keypress(int keycode, t_game *game);
 void	move_player(t_game *game, int dx, int dy);
 int		check_valid_path(t_map *map);
 void	display_moves(t_game *game);
+int		close_game(t_game *game);
+void	flood_fill(char **map_copy, t_point p, int width, int height);
+char	**copy_map(t_map *map);
+char	**read_lines(char *path, int *height);
+int		is_rectangular(t_map *map);
+int		check_walls(t_map *map);
+int		check_characters(t_map *map);
 
 #endif

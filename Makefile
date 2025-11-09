@@ -10,9 +10,10 @@ LIBFT_LIB = $(LIBFT_DIR)/libft.a
 MLX_FLAGS = -L$(MLX_DIR) -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz
 LIBFT_FLAGS = -L$(LIBFT_DIR) -lft
 
-SRC = main.c map_helper.c render.c controls.c
+SRC = main.c map_helper.c render.c controls.c\
+	 check_valid_path.c flood_fill.c map_utils.c
 OBJ = $(SRC:.c=.o)
-NAME = test
+NAME = so_long
 
 all: $(MLX_LIB) $(LIBFT_LIB) $(NAME)
 
